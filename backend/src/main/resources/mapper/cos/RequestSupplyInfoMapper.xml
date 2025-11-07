@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.RequestSupplyInfoMapper">
+
+    <!-- 分页获取供应采购 -->
+    <select id="querySupplyPage" resultType="java.util.LinkedHashMap">
+        SELECT
+            rsi.id,
+            rsi.num,
+            rsi.content,
+            rsi.price,
+            rsi.enterprise_id,
+            rsi.put_address,
+            rsi.put_longitude,
+            rsi.put_latitude,
+            rsi.out_address,
+            rsi.out_longitude,
+            rsi.out_latitude,
+            rsi.logistics,
+            rsi.status,
+            rsi.create_date,
+            ei.name
+        FROM
+            request_supply_info rsi
+                LEFT JOIN enterprise_info ei ON (ei.id = rsi.enterprise_id)
+        WHERE
+            1 = 1
+        <if test="requestSupplyInfo.name != null and requestSupplyInfo.name != ''">
+            AND ei.name LIKE CONCAT('%',#{requestSupplyInfo.name},'%')
+        </if>
+        <if test="requestSupplyInfo.num != null and requestSupplyInfo.num != ''">
+            AND rsi.num LIKE CONCAT('%',#{requestSupplyInfo.num},'%')
+        </if>
+        <if test="requestSupplyInfo.status != null">
+            AND rsi.status = #{requestSupplyInfo.status}
+        </if>
+        ORDER BY
+            rsi.create_date DESC
+    </select>
+</mapper>
