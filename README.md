@@ -1,0 +1,2 @@
+# warehouse_forecast_cos
+基于人脸认证和时间序列分析预测的仓储出入库审批系统
