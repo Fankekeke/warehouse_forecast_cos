@@ -28,7 +28,7 @@ public class PredictionServiceImpl implements IPredictionService {
     private IDrugInfoService drugInfoService;
 
     @Override
-    public PredictionResult predictSales(Integer drugId, Integer days) {
+    public PredictionResult predictSales(String name, Integer typeId, Integer days) {
         // 获取历史销售数据（例如过去90天）
         List<OrderItem> historicalSales = getHistoricalSalesData(drugId, 15);
 
@@ -60,7 +60,7 @@ public class PredictionServiceImpl implements IPredictionService {
     }
 
     @Override
-    public PredictionResult predictInventoryDemand(Integer pharmacyId, Integer days) {
+    public PredictionResult predictInventoryDemand(String name, Integer typeId, Integer days) {
         // 获取药店历史销售数据
         List<DrugSales> historicalSales = getPharmacyHistoricalSales(pharmacyId, 15);
 

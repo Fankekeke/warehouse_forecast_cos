@@ -4,17 +4,20 @@ package cc.mrbird.febs.cos.service;
 public interface IPredictionService {
     /**
      * 预测出库量
-     * @param drugId 药品ID
-     * @param days 预测天数
+     *
+     * @param name   物品名称
+     * @param typeId 物品ID
+     * @param days   预测天数
      * @return 预测结果
      */
-    PredictionResult predictSales(Integer drugId, Integer days);
+    PredictionResult predictSales(String name, Integer typeId, Integer days);
 
     /**
      * 预测库存需求
-     * @param pharmacyId 药店ID
-     * @param days 预测天数
+     *
+     * @param name   物品名称
+     * @param typeId 物品ID
      * @return 库存需求预测结果
      */
-    PredictionResult predictInventoryDemand(Integer pharmacyId, Integer days);
+    PredictionResult predictInventoryDemand(String name, Integer typeId, Integer days);
 }
