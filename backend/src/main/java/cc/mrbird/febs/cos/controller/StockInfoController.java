@@ -3,10 +3,13 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.FileDownloadUtils;
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.ConsumableType;
 import cc.mrbird.febs.cos.entity.StockInfo;
+import cc.mrbird.febs.cos.service.IConsumableTypeService;
 import cc.mrbird.febs.cos.service.IStockInfoService;
 import cc.mrbird.febs.cos.service.IStockPutService;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author FanK
@@ -27,6 +33,23 @@ public class StockInfoController {
     private final IStockInfoService stockInfoService;
 
     private final IStockPutService stockPutService;
+
+    private final IConsumableTypeService consumableTypeService;
+
+    /**
+     * 获取所有库存信息
+     *
+     * @return
+     */
+    @GetMapping("/queryAllStockList")
+    public R queryAllStockList() {
+        List<StockInfo> stockInfoList = stockInfoService.list(Wrappers.<StockInfo>lambdaQuery().eq(StockInfo::getIsIn, 0));
+        // 获取类型
+        List<ConsumableType> consumableTypeList = consumableTypeService.list();
+        Map<Integer, String> typeMap = consumableTypeList.stream().collect(Collectors.toMap(ConsumableType::getId, ConsumableType::getName));
+        stockInfoList.forEach(item -> item.setTypeName(typeMap.get(item.getTypeId())));
+        return R.ok(stockInfoList);
+    }
 
     /**
      * 获取主页信息

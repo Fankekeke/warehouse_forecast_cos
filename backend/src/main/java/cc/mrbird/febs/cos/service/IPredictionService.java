@@ -1,5 +1,7 @@
 package cc.mrbird.febs.cos.service;
 
+import cc.mrbird.febs.cos.entity.PredictionResult;
+
 // 预测服务接口
 public interface IPredictionService {
     /**
@@ -7,10 +9,9 @@ public interface IPredictionService {
      *
      * @param name   物品名称
      * @param typeId 物品ID
-     * @param days   预测天数
      * @return 预测结果
      */
-    PredictionResult predictSales(String name, Integer typeId, Integer days);
+    PredictionResult predictSales(String name, Integer typeId);
 
     /**
      * 预测库存需求
@@ -19,5 +20,5 @@ public interface IPredictionService {
      * @param typeId 物品ID
      * @return 库存需求预测结果
      */
-    PredictionResult predictInventoryDemand(String name, Integer typeId, Integer days);
+    PredictionResult predictInventoryDemand(String name, Integer typeId);
 }

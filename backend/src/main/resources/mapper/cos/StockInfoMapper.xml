@@ -226,4 +226,108 @@
         ( SELECT count( 1 ) AS outCount FROM stock_info si WHERE si.is_in = 2 ) AS on2,
         ( SELECT IFNULL( SUM( si.amount * si.price ),0) AS price FROM stock_info si WHERE si.is_in = 1 ) AS on3
     </select>
+
+    <!-- 获取历史出库数据 -->
+    <select id="getHistoricalSales" resultType="cc.mrbird.febs.cos.entity.Sale">
+        SELECT
+        DATE_FORMAT(spo.days, '%Y-%m-%d') AS date,
+        IFNULL(SUM(si.amount), 0) AS quantity
+        FROM
+        (
+        SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) days UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 10 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 11 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 12 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 14 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 15 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 16 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 17 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 18 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 19 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 20 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 21 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 22 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 23 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 24 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 25 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 26 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 27 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 28 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+        ) spo
+        LEFT JOIN stock_info si ON (
+        DATE_FORMAT(si.create_date, '%Y-%m-%d') = DATE_FORMAT(spo.days, '%Y-%m-%d')
+        AND si.is_in = 2
+        <if test="name != null and name != ''">
+            AND si.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="typeId != null">
+            AND si.type_id = #{typeId}
+        </if>
+        )
+        GROUP BY spo.days
+        ORDER BY spo.days ASC
+    </select>
+
+    <!-- 获取历史库存数据 -->
+    <select id="getHistoricalInventory" resultType="cc.mrbird.febs.cos.entity.Inventory">
+        SELECT
+        DATE_FORMAT(spo.days, '%Y-%m-%d') AS date,
+        IFNULL(SUM(si.amount), 0) AS quantity
+        FROM
+        (
+        SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) days UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 10 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 11 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 12 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 14 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 15 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 16 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 17 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 18 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 19 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 20 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 21 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 22 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 23 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 24 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 25 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 26 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 27 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 28 DAY) UNION
+        SELECT DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+        ) spo
+        LEFT JOIN stock_info si ON (
+        DATE_FORMAT(si.create_date, '%Y-%m-%d') = DATE_FORMAT(spo.days, '%Y-%m-%d')
+        AND si.is_in = 1
+        <if test="name != null and name != ''">
+            AND si.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="typeId != null">
+            AND si.type_id = #{typeId}
+        </if>
+        )
+        GROUP BY spo.days
+        ORDER BY spo.days ASC
+    </select>
 </mapper>

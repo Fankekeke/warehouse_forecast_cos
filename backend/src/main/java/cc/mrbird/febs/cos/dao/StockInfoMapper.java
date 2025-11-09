@@ -1,5 +1,7 @@
 package cc.mrbird.febs.cos.dao;
 
+import cc.mrbird.febs.cos.entity.Inventory;
+import cc.mrbird.febs.cos.entity.Sale;
 import cc.mrbird.febs.cos.entity.StockInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +18,7 @@ public interface StockInfoMapper extends BaseMapper<StockInfo> {
 
     // 分页获取库房信息
     IPage<LinkedHashMap<String, Object>> stockInfoByPage(Page page, @Param("stockInfo") StockInfo stockInfo);
+
     List<LinkedHashMap<String, Object>> stockInfoByList(@Param("stockInfo") StockInfo stockInfo);
 
     // 分页获取物品出入库详情
@@ -38,4 +41,22 @@ public interface StockInfoMapper extends BaseMapper<StockInfo> {
 
     // 本月数据统计
     LinkedHashMap<String, Object> stockInfoByMonth();
+
+    /**
+     * 获取历史出库数据
+     *
+     * @param name   物品名称
+     * @param typeId 物品类型ID
+     * @return 预测结果
+     */
+    List<Sale> getHistoricalSales(String name, Integer typeId);
+
+    /**
+     * 获取历史库存数据
+     *
+     * @param name   物品名称
+     * @param typeId 物品类型ID
+     * @return 预测结果
+     */
+    List<Inventory> getHistoricalInventory(String name, Integer typeId);
 }

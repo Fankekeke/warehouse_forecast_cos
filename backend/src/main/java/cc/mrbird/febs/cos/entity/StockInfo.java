@@ -88,4 +88,7 @@ public class StockInfo implements Serializable {
     @TableField(exist = false)
     private Integer userId;
 
+    @TableField(exist = false)
+    private String typeName;
+
 }
